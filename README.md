@@ -1,4 +1,4 @@
-# project_meetup
+# MeetUp App built by Vue,Vuex,Vuetify and firebase
 
 ## Project setup
 ```
