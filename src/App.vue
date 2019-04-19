@@ -1,38 +1,55 @@
 <template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+  <v-app class="secondary">
+    <app-navigation
+      :menuItems="menuItems"
+      :userIsAuthenticated="userIsAuthenticated"
+      @clicked="logOut"
+    ></app-navigation>
+    <main>
+      <router-view></router-view>
+    </main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import NavigationBar from './components/NavigationBar';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    'app-navigation': NavigationBar
   },
-  data () {
-    return {
-      //
+  computed: {
+    menuItems() {
+      // this menu will be shown if there is no user login
+      let menuItems = [
+        { icon: 'assignment_turned_in', title: 'Sign Up', link: '/signup' },
+        { icon: 'lock_open', title: 'Sign In', link: '/signin' }
+      ];
+      // this menu will only shown if there is a user login
+      if (this.userIsAuthenticated) {
+        menuItems = [
+          { icon: 'people', title: 'Explore Meetups', link: '/meetups' },
+          { icon: 'room', title: 'Create Meetup', link: '/meetups/new' }
+          // { icon: 'account_circle', title: 'Profile', link: '/profile' }
+        ];
+      }
+      return menuItems;
+    },
+    // this function is to check whether is a user login the webpage
+    userIsAuthenticated() {
+      return (
+        this.$store.getters.user !== null &&
+        this.$store.getters.user !== undefined
+      );
+    }
+  },
+  methods: {
+    logOut(value) {
+      if (value) {
+        this.$store.dispatch('logout');
+      }
     }
   }
-}
+};
 </script>
