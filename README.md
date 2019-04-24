@@ -1,5 +1,6 @@
 # MeetUp App built by Vue,Vuex,Vuetify and firebase
 
+credit to Academind
 ## Project setup
 ```
 npm install
